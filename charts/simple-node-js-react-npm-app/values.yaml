@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: draft
-  tag: dev
+  repository: 10.47.253.253:5000/krithiva/simple-node-js-react-npm-app
+  tag: 0.0.1
   pullPolicy: IfNotPresent
 service:
   name: simple-node-js-react-npm-app
