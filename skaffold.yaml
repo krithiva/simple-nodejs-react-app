@@ -1,0 +1,31 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.DOCKER_REGISTRY}}/krithiva/simple-node-js-react-npm-app:{{.VERSION}}"
+  artifacts:
+  - imageName: changeme
+    workspace: .
+    docker: {}
+  local: {}
+deploy:
+  kubectl:
+    manifests:
+profiles:
+- name: dev
+  build:
+    tagPolicy:
+      envTemplate:
+        template: "{{.DOCKER_REGISTRY}}/krithiva/simple-node-js-react-npm-app:{{.DIGEST_HEX}}"
+    artifacts:
+    - docker: {}
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: simple-node-js-react-npm-app
+        chartPath: charts/simple-node-js-react-npm-app
+        setValueTemplates:
+          image.repository: "{{.DOCKER_REGISTRY}}/krithiva/simple-node-js-react-npm-app"
+          image.tag: "{{.DIGEST_HEX}}"
